@@ -17,7 +17,7 @@
 
     </head>
     <body>
-        <header class="with-background" style="background: url('http://localhost/E-commerce/public/img/triangles.svg');">
+        <header class="with-background" style="background: url('{{ asset('img/triangles.svg') }}');">
             <div class="top-nav container">
                 <div class="top-nav-left">
                     <div class="logo">Ecommerce</div>

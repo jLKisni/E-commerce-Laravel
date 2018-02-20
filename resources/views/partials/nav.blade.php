@@ -1,4 +1,4 @@
-<header style="background: url('http://localhost/E-commerce/public/img/triangles.svg');">
+<header style="background: url('{{ asset('img/triangles.svg') }}');">
     <div class="top-nav container">
       <div class="top-nav-left">
           <div class="logo"><a href="{{route('landing-page')}}">Ecommerce</a></div>

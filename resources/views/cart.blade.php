@@ -18,18 +18,40 @@
 
     <div class="cart-section container">
         <div>
-        
+            
+            @if (session()->has('success_msg'))
+                <div class="alert alert-success">
+                    {{ session()->get('success_msg') }}
+                </div>
+            @endif
 
-            <h2>1 item(s) in Shopping Cart</h2>
+            @if (count($errors) > 0)
+                
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
 
+            @endif
+
+
+            @if (Cart::count() > 0)   
+
+            <h2>{{ Cart::count() }} item(s) in Shopping Cart</h2>
+           
             <div class="cart-table">
+                @foreach (Cart::content() as $product)
+                    {{-- expr --}}
                 
                 <div class="cart-table-row">
                     <div class="cart-table-row-left">
-                        <a href=""><img src="{{asset('img/products/appliance-1.jpg')}}" alt="item" class="cart-table-img"></a>
+                        <a href="{{route('shop.show',$product->model->slug)}}"><img src="{{asset('img/products/'.$product->model->slug.'.jpg')}}" alt="item" class="cart-table-img"></a>
                         <div class="cart-item-details">
-                            <div class="cart-table-item"><a href="">Product Name</a></div>
-                            <div class="cart-table-description">Product Details</div>
+                            <div class="cart-table-item"><a href="{{route('shop.show',$product->model->slug)}}">{{ $product->model->name }}</a></div>
+                            <div class="cart-table-description">{{ $product->model->details }}</div>
                         </div>
                     </div>
                     <div class="cart-table-row-right">
@@ -41,10 +63,8 @@
                                 <button type="submit" class="cart-options">Save for Later</button>
                         </div>
                         <div>
-                            <select class="quantity" data-id="{{ $item->rowId }}">
-                                @for ($i = 1; $i < 5 + 1 ; $i++)
-                                    <option {{ $item->qty == $i ? 'selected' : '' }}>{{ $i }}</option>
-                                @endfor
+                            <select class="quantity" data-id="">
+                               
                                 {{-- <option {{ $item->qty == 1 ? 'selected' : '' }}>1</option>
                                 <option {{ $item->qty == 2 ? 'selected' : '' }}>2</option>
                                 <option {{ $item->qty == 3 ? 'selected' : '' }}>3</option>
@@ -52,12 +72,15 @@
                                 <option {{ $item->qty == 5 ? 'selected' : '' }}>5</option> --}}
                             </select>
                         </div>
-                        <div>132131</div>
+                        <div>{{ $product->model->presetPrice() }}</div>
                     </div>
                 </div> <!-- end cart-table-row -->
-               
+
+               @endforeach
 
             </div> <!-- end cart-table -->
+
+            
 
             <div class="cart-totals">
                 <div class="cart-totals-left">
@@ -83,7 +106,10 @@
                 <a href="" class="button-primary">Proceed to Checkout</a>
             </div>
 
-           
+           @else
+
+                 <h3> No Items in the Cart</h3><br>
+            @endif
             
 
             <h2>1 item(s) Saved For Later</h2>
@@ -94,7 +120,7 @@
                     <div class="cart-table-row-left">
                         <a href=""><img src="{{asset('img/products/appliance-1.jpg')}}" alt="item" class="cart-table-img"></a>
                         <div class="cart-item-details">
-                            <div class="cart-table-item"><a href="">{{ $item->model->name }}</a></div>
+                            <div class="cart-table-item"><a href=""></a></div>
                             <div class="cart-table-description"></div>
                         </div>
                     </div>
