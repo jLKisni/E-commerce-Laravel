@@ -14,9 +14,9 @@
         {{ csrf_field() }}
     </form>
     @endguest
-    <li><a href="">Cart
+    <li><a href="{{ route('cart.index') }}">Cart
     
-    <span class="cart-count"><span>2</span></span>
+    <span class="cart-count"><span>{{ Cart::instance('default')->count() }}</span></span>
   
     </a></li>
     {{-- @foreach($items as $menu_item)

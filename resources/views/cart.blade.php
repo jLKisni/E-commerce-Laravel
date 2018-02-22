@@ -56,11 +56,25 @@
                     </div>
                     <div class="cart-table-row-right">
                         <div class="cart-table-actions">
-                           
+                                
+                                <form action="{{ route('cart.destroy', $product->rowId) }}" method="POST">
+                                    
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
 
-                                <button type="submit" class="cart-options">Remove</button>
-                           
+                                     <button type="submit" class="cart-options">Remove</button>
+                                </form>
+                                
+                               
+                           <form action="{{ route('cart.SaveForLater',$product->rowId) }}" method="POST">
+                               
+                               {{ csrf_field() }}
+
+
                                 <button type="submit" class="cart-options">Save for Later</button>
+
+                           </form>
+                               
                         </div>
                         <div>
                             <select class="quantity" data-id="">
@@ -90,13 +104,13 @@
                 <div class="cart-totals-right">
                     <div>
                         Subtotal <br>
-                        Tax (13%)<br>
+                        Tax (5%)<br>
                         <span class="cart-totals-total">Total</span>
                     </div>
                     <div class="cart-totals-subtotal">
-                       asdsa <br>
-                        12321 <br>
-                        <span class="cart-totals-total">12321</span>
+                       {{ presetPrice(Cart::subtotal()) }} <br>
+                        {{ presetPrice(Cart::tax()) }} <br>
+                        <span class="cart-totals-total">{{ presetPrice(Cart::total()) }}</span>
                     </div>
                 </div>
             </div> <!-- end cart-totals -->
@@ -109,41 +123,68 @@
            @else
 
                  <h3> No Items in the Cart</h3><br>
+                   
+                   <a href="{{ route('shop.index') }}" class="button">Continue Shopping</a><br>
+                   <div class="spacer"></div>
             @endif
             
+            
+            @if (Cart::instance('saveforlater')->count() > 0)
+                {{-- expr --}}
 
-            <h2>1 item(s) Saved For Later</h2>
+                <h2>{{ Cart::instance('saveforlater')->count() }} item(s) Saved For Later</h2>
 
-            <div class="saved-for-later cart-table">
-               
-                <div class="cart-table-row">
-                    <div class="cart-table-row-left">
-                        <a href=""><img src="{{asset('img/products/appliance-1.jpg')}}" alt="item" class="cart-table-img"></a>
-                        <div class="cart-item-details">
-                            <div class="cart-table-item"><a href=""></a></div>
-                            <div class="cart-table-description"></div>
+                 @foreach (Cart::content() as $item)
+        
+                <div class="saved-for-later cart-table">
+                   
+                    <div class="cart-table-row">
+                        <div class="cart-table-row-left">
+                            <a href=""><img src="{{asset('img/products/'.$item->model->slug.'.jpg')}}" alt="item" class="cart-table-img"></a>
+                            <div class="cart-item-details">
+                                <div class="cart-table-item"><a href="">{{ $item->model->name }}</a></div>
+                                <div class="cart-table-description">{{ $item->model->details }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="cart-table-row-right">
-                        <div class="cart-table-actions">
-                            
+                        <div class="cart-table-row-right">
+                            <div class="cart-table-actions">
+                                
+    
+                                    <form action="{{ route('savelater.destroy',$item->rowId) }}" method="POST">
+                                        
+                                        {{ csrf_field() }}
+                                        
+                                        {{ method_field('DELETE') }}
 
-                                <button type="submit" class="cart-options">Remove</button>
-                           
+                                        <button type="submit" class="cart-options">Remove</button>
 
 
-                                <button type="submit" class="cart-options">Move to Cart</button>
-                            
+                                    </form>
+
+                                    <form action="{{ route('tocart.addToCart',$item->rowId) }}" method="POST">
+                               
+                                        {{ csrf_field() }}
+
+
+                                        <button type="submit" class="cart-options">Move to cart</button>
+
+                                     </form>
+                                
+                            </div>
+
+                            <div>{{ presetPrices($item->model->price) }}</div>
                         </div>
+                    </div> <!-- end cart-table-row -->
+                   
 
-                        <div>12321</div>
-                    </div>
-                </div> <!-- end cart-table-row -->
-               
+                </div> <!-- end saved-for-later -->
 
-            </div> <!-- end saved-for-later -->
+                @endforeach
 
-           
+             @else
+                <div class="spacer"></div>
+                <h3>No items for save for later</h3>
+             @endif
 
 
         </div>

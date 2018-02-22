@@ -14,5 +14,11 @@ Route::get('/shop/{product}','ShopController@show')->name('shop.show');
 
 Route::get('/cart','CartController@index')->name('cart.index');
 Route::post('/cart','CartController@store')->name('cart.store');
+Route::delete('/cart/{product}','CartController@destroy')->name('cart.destroy');
 Route::get('/removeCart','CartController@removeCart')->name('cart.removeCart');
+Route::post('/cart/SaveForLater/{product}','CartController@SaveForLater')->name('cart.SaveForLater');
 
+// Save Later Controller
+
+Route::delete('/savelater/{product}', 'SaveLaterController@destroy')->name('savelater.destroy');\
+Route::post('/tocart/{product}','SaveLaterController@toCart')->name('tocart.addToCart');
