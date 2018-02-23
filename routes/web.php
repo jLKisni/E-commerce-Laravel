@@ -22,3 +22,16 @@ Route::post('/cart/SaveForLater/{product}','CartController@SaveForLater')->name(
 
 Route::delete('/savelater/{product}', 'SaveLaterController@destroy')->name('savelater.destroy');\
 Route::post('/tocart/{product}','SaveLaterController@toCart')->name('tocart.addToCart');
+
+
+// Checkout Controller
+
+Route::get('/checkout','CheckoutController@index')->name('checkout.index');
+Route::post('/checkout','CheckoutController@store')->name('checkout.store');
+
+
+// Confirmation Controller
+
+Route::get('/confirm','ConfirmationController@index')->name('confirm.index');
+
+

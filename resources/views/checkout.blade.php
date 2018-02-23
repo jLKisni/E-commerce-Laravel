@@ -12,12 +12,15 @@
 
     <div class="container">
 
-     
+<div class="spacer"></div>
+      @include('layouts.error_msg')
 
         <h1 class="checkout-heading stylish-heading">Checkout</h1>
         <div class="checkout-section">
+             <form action="{{ route('checkout.store') }}" id="payment-form" method="POST">
+
+                {{ csrf_field() }}
             <div>
-            
                    
                     <h2>Billing Details</h2>
 
@@ -81,57 +84,54 @@
                     <div class="spacer"></div>
 
                     <button type="submit" id="complete-order" class="button-primary full-width">Complete Order</button>
-
-
-                </form>
             </div>
-
+            </form>
 
 
             <div class="checkout-table-container">
+
+
                 <h2>Your Order</h2>
 
                 <div class="checkout-table">
                     
-                    <div class="checkout-table-row">
-                        <div class="checkout-table-row-left">
-                            <img src="{{asset('img/products/appliance-1.jpg')}}" alt="item" class="checkout-table-img">
-                            <div class="checkout-item-details">
-                                <div class="checkout-table-item"></div>
-                                <div class="checkout-table-description"></div>
-                                <div class="checkout-table-price"></div>
-                            </div>
-                        </div> <!-- end checkout-table -->
 
-                        <div class="checkout-table-row-right">
-                            <div class="checkout-table-quantity"></div>
-                        </div>
-                    </div> <!-- end checkout-table-row -->
-                  
+                    @foreach (Cart::content() as $item)
+                        {{-- expr --}}
+                
+                        <div class="checkout-table-row">
+                            <div class="checkout-table-row-left">
+                                <img src="{{asset('img/products/'.$item->model->slug.'.jpg')}}" alt="item" class="checkout-table-img">
+                                <div class="checkout-item-details">
+                                    <div class="checkout-table-item">{{ $item->model->name }}</div>
+                                    <div class="checkout-table-description">{{ $item->model->details }}</div>
+                                    <div class="checkout-table-price">{{ presetPrice($item->model->price) }}</div>
+                                </div>
+                            </div> <!-- end checkout-table -->
+
+                            <div class="checkout-table-row-right">
+                                <div class="checkout-table-quantity">1</div>
+                            </div>
+                        </div> <!-- end checkout-table-row -->
+
+                      @endforeach
 
                 </div> <!-- end checkout-table -->
 
                 <div class="checkout-totals">
                     <div class="checkout-totals-left">
                         Subtotal <br>
-                       
-                            Discount 
-                            
-                                <button type="submit" style="font-size:14px">Remove</button>
-                            </form>
-                            <br>
-                            <hr>
-                            New Subtotal <br>
+                        Tax (5%) <br>
                         
-                        Tax (13%)<br>
                         <span class="checkout-totals-total">Total</span>
 
                     </div>
 
                     <div class="checkout-totals-right">
-                        <br>
+                        {{ presetPrice(Cart::subtotal()) }}<br>
+                        {{ presetPrice(Cart::tax()) }}<br>
                         
-                        <span class="checkout-totals-total"></span>
+                        <span class="checkout-totals-total">{{ presetPrice(Cart::total()) }}</span>
 
                     </div>
                 </div> <!-- end checkout-totals -->
@@ -159,7 +159,8 @@
     <script>
         (function(){
             // Create a Stripe client
-            var stripe = Stripe('pk_test_JKVJPMynL8ckk7ivBxoroTlT');
+            var stripe = Stripe('pk_test_ZfXjLtSohQui4GwbInNJNeFp');
+
 
             // Create an instance of Elements
             var elements = stripe.elements();

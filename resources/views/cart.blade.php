@@ -19,24 +19,8 @@
     <div class="cart-section container">
         <div>
             
-            @if (session()->has('success_msg'))
-                <div class="alert alert-success">
-                    {{ session()->get('success_msg') }}
-                </div>
-            @endif
-
-            @if (count($errors) > 0)
-                
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-
-            @endif
-
+          
+          @include('layouts.error_msg');
 
             @if (Cart::count() > 0)   
 
@@ -116,8 +100,8 @@
             </div> <!-- end cart-totals -->
 
             <div class="cart-buttons">
-                <a href="" class="button">Continue Shopping</a>
-                <a href="" class="button-primary">Proceed to Checkout</a>
+                <a href="{{ route('shop.index') }}" class="button">Continue Shopping</a>
+                <a href="{{ route('checkout.index') }}" class="button-primary">Proceed to Checkout</a>
             </div>
 
            @else

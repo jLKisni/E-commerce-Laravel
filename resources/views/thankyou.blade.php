@@ -15,7 +15,7 @@
        <p>A confirmation email was sent</p>
        <div class="spacer"></div>
        <div>
-           <a href="{{ url('/') }}" class="button">Home Page</a>
+           <a href="{{ route('shop.index') }}" class="button">Home Page</a>
        </div>
    </div>
 

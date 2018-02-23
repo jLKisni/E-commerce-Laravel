@@ -79,6 +79,8 @@ class CartController extends Controller
 
         Cart::remove($id);
 
+        
+
         Cart::instance('saveforlater')->add($item->id,$item->name,1,$item->price)->associate("App\Product");
 
         return redirect()->route('cart.index')->with('success_msg','Item was added to save for later');
