@@ -19,6 +19,7 @@
     <div class="cart-section container">
         <div>
             
+            
           
           @include('layouts.error_msg');
 
@@ -61,13 +62,16 @@
                                
                         </div>
                         <div>
-                            <select class="quantity" data-id="">
+                            <select class="quantity" data-id="{{ $product->rowId }}">
+                                @for ($i = 1; $i < 5 + 1 ; $i++)
+                                    <option {{ $product->qty == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                @endfor
                                
-                                {{-- <option {{ $item->qty == 1 ? 'selected' : '' }}>1</option>
-                                <option {{ $item->qty == 2 ? 'selected' : '' }}>2</option>
-                                <option {{ $item->qty == 3 ? 'selected' : '' }}>3</option>
-                                <option {{ $item->qty == 4 ? 'selected' : '' }}>4</option>
-                                <option {{ $item->qty == 5 ? 'selected' : '' }}>5</option> --}}
+                                {{-- <option {{ $product->qty == 1 ? 'selected' : '' }}>1</option>
+                                <option {{ $product->qty == 2 ? 'selected' : '' }}>2</option>
+                                <option {{ $product->qty == 3 ? 'selected' : '' }}>3</option>
+                                <option {{ $product->qty == 4 ? 'selected' : '' }}>4</option>
+                                <option {{ $product->qty == 5 ? 'selected' : '' }}>5</option> --}}
                             </select>
                         </div>
                         <div>{{ $product->model->presetPrice() }}</div>
@@ -181,6 +185,36 @@
 @endsection
 
 @section('extra-js')
+    
+ {{--    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+        
+        $(function(){
+
+            $('.quantity').on('change',function(){
+
+
+                var id = $('{{ $product-> }}')
+               // $.ajax({
+               //  url: '{{ route('cart/') }}',
+               //  method: 'PUT',
+               //  dataType: 'json',
+               //  success: function( data ) {
+               //  alert(JSON.stringify(data));
+               //  },
+               //  error: function( data ) {
+               //  alert('error');
+               //  }
+               //  });
+
+
+            });
+
+        })
+
+    </script> --}}
+
     <script src="{{ asset('js/app.js') }}"></script>
     <script>
         (function(){
@@ -189,7 +223,7 @@
             Array.from(classname).forEach(function(element) {
                 element.addEventListener('change', function() {
                     const id = element.getAttribute('data-id')
-                    axios.patch(`/cart/${id}`, {
+                    axios.patch(`cart/${id}`, {
                         quantity: this.value
                     })
                     .then(function (response) {
@@ -197,7 +231,7 @@
                         window.location.href = '{{ route('cart.index') }}'
                     })
                     .catch(function (error) {
-                        // console.log(error);
+                         // console.log(error);
                         window.location.href = '{{ route('cart.index') }}'
                     });
                 })

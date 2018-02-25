@@ -55,10 +55,11 @@
                     @endif
                  @endforeach
                 
+
             </div> <!-- end products -->
 
-            <div class="spacer"></div>
-            
+            <div class="spacer text-center"></div>
+              <center>{{ $products->links('vendor.pagination.default') }}</center>
         </div>
     </div>
 
